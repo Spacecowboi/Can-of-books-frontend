@@ -10,27 +10,26 @@ import {
   Route
 } from "react-router-dom";
 
-
 class App extends React.Component {
   render() {
     return (
-      <>
-        <Router>
-          <Header />
-          <Routes>
-            <Route 
-              exact path="/"
-              element={<BestBooks />}
-            >
-            </Route>
+      <Router>
+        <Header />
+        <Routes>
+          <Route 
+            path="/"          
+            element={<BestBooks />}
+          />
+          <Route
             path="/About"
             element={<About />}
-          </Routes>
-          <Footer />
-        </Router>
-      </>
-    )
+          />
+        </Routes>
+        <Footer />
+      </Router>
+    );
   }
 }
 
 export default App;
+
