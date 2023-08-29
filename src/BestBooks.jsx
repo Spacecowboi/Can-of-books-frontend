@@ -16,6 +16,7 @@ class BestBooks extends React.Component {
   async componentDidMount() {
     try {
       const response = await axios.get('/books');
+      console.log('Got the data from the backend!:', response.data);
       this.setState({ books: response.data });
     } catch (error) {
       console.error('Oops! Looks like we tore a page:', error);
@@ -29,7 +30,7 @@ class BestBooks extends React.Component {
 
     return (
       <>
-        <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
+        <h2>Essential Reading for Just About Everyone</h2>
 
         {books.length > 0 ? (
           <div id="bookCarousel" className="carousel slide" data-ride="carousel">
