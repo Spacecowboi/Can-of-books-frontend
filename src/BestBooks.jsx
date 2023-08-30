@@ -42,15 +42,28 @@ class BestBooks extends React.Component {
       });
     }
 
-  // async componentDidMount() {
-  //   try {
-  //     const response = await axios.get(`${PORT}/books`);
-  //     console.log('Got the data from the backend!:', response.data);
-  //     this.setState({ books: response.data });
-  //   } catch (error) {
-  //     console.error('Oops! Looks like we tore a page:', error);
-  //   }
-  // }
+    handleDeleteBook = (id) => {
+      console.log("id:", id);
+      axios.delete(`${PORT}/books/${id}`)
+      .then(response => {
+        console.log('Booked Deleted.', response);
+        this.fetchEveryBook();
+      })
+    }
+    // Save book axios call
+
+    saveBook = (title, desciption, status) => {
+      axios.post(`${PORT}/books`, {
+        title: title,
+        description: desciption,
+        status: status,
+      }).then(res => {
+        console.log("New book created", res)
+        this.fetchEveryBook();
+      });
+      
+
+    };
 
   render() {
 
@@ -61,7 +74,7 @@ class BestBooks extends React.Component {
 
         {this.state.books.length ? (
               <Carousel>
-                    {this.state.books.map((books, idx) =>
+                    {this.state.books.map((book, idx) =>
                     <Carousel.Item key={idx}>
                             <img
                               className="d-block w-100"
@@ -70,14 +83,15 @@ class BestBooks extends React.Component {
                             />
                       <Carousel.Caption>
                         <h3>
-                          {books.title}
+                          {book.title}
                         </h3>
                         <p>
-                          {books.description}
+                          {book.description}
                         </p>
                         <p>
-                           {books.status}
+                           {book.status}
                         </p>
+                        <Button onClick={() => this.handleDeleteBook(book._id)}> Delete Book</Button>
                       </Carousel.Caption>
                     </Carousel.Item>)
                     }
@@ -87,7 +101,10 @@ class BestBooks extends React.Component {
           <h3>No Books Found :</h3>
         )}
         <Button onClick={this.handleModalShow} variant="dark">Add Book</Button>
-        <BookFormModal showNewBookForm={this.state.showNewBookForm} onModalClose={this.handleModalClose}/>
+        <BookFormModal 
+          showNewBookForm={this.state.showNewBookForm} 
+          onModalClose={this.handleModalClose}
+          onModalSave={this.saveBook}   />
 
       </>
     )

@@ -4,6 +4,16 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 
 class BookFormModal extends React.Component{
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const formTitle = event.target.elements.formTitle.value;
+        const formDescription = event.target.elements.formDescription.value;
+        const formStatus = event.target.elements.formStatus.value;
+
+        this.props.onModalSave(formTitle, formDescription, formStatus);
+        this.props.onModalClose();
+    }
+
     
 render(){
     return (
@@ -13,34 +23,34 @@ render(){
             <Modal.Header closeButton>
               <Modal.Title>Add Book</Modal.Title>
             </Modal.Header>
-    
+        
             <Modal.Body>
-            <Form>
+            <form onSubmit={this.handleSubmit}>
                 <Form.Group className="mb-3" controlId="formTitle">
                     <Form.Label>Title</Form.Label>
-                    <Form.Control type="title" placeholder="Enter title" />
+                    <Form.Control required type="title" placeholder="Enter title" />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formDescription">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control type="textarea" placeholder="Enter description" />
+                    <Form.Control  required type="textarea" placeholder="Enter description" />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formStatus">
                     <Form.Label>Status</Form.Label>
-                    <Form.Select type="select" placeholder="Enter status">
-                    <option value="1">Available</option>
-                    <option value="2">Checked Out</option>
-                    <option value="3">On Hold</option>
+                    <Form.Select  required type="select" placeholder="Enter status">
+                    <option value="Available">Available</option>
+                    <option value="Checked Out">Checked Out</option>
+                    <option value="On Hold">On Hold</option>
                 </Form.Select>
                 </Form.Group>
-
-              </Form>
+                <Button type='submit' variant="dark">Save Book</Button>
+              </form>
             </Modal.Body>
     
             <Modal.Footer>
-              <Button onClick={this.props.onModalClose} variant="secondary">Close</Button>
-              <Button variant="primary">Save changes</Button>
+              <Button onClick={this.props.onModalClose} variant="secondary">Close Without Saving</Button>
+
             </Modal.Footer>
         </Modal>
       );
