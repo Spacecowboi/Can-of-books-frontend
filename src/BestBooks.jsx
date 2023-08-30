@@ -41,16 +41,19 @@ class BestBooks extends React.Component {
         showNewBookForm: false,
       });
     }
+    // Save book axios call
 
-  // async componentDidMount() {
-  //   try {
-  //     const response = await axios.get(`${PORT}/books`);
-  //     console.log('Got the data from the backend!:', response.data);
-  //     this.setState({ books: response.data });
-  //   } catch (error) {
-  //     console.error('Oops! Looks like we tore a page:', error);
-  //   }
-  // }
+    saveBook = (title, desciption, status) => {
+      axios.post(`${PORT}/books`, {
+        title: title,
+        description: desciption,
+        status: status,
+      }).then(res => {
+        console.log("New book created", res)
+      });
+      
+
+    };
 
   render() {
 
@@ -87,7 +90,10 @@ class BestBooks extends React.Component {
           <h3>No Books Found :</h3>
         )}
         <Button onClick={this.handleModalShow} variant="dark">Add Book</Button>
-        <BookFormModal showNewBookForm={this.state.showNewBookForm} onModalClose={this.handleModalClose}/>
+        <BookFormModal 
+          showNewBookForm={this.state.showNewBookForm} 
+          onModalClose={this.handleModalClose}
+          onModalSave={this.saveBook}   />
 
       </>
     )
