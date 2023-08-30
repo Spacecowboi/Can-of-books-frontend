@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios'; 
 import Carousel from 'react-bootstrap/Carousel';
 import BackgroundImage from './images/bookshelf_image.jpeg'
+import Button from 'react-bootstrap/Button';
+import BookFormModal from './BookFormModal';
 
 
 const PORT = import.meta.env.VITE_server_url;
@@ -11,7 +13,8 @@ class BestBooks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: []
+      books: [],
+      showNewBookForm: false,
     }
   }
 
@@ -24,9 +27,19 @@ class BestBooks extends React.Component {
         console.log(response.data)
       });
   }
-
     componentDidMount() {
       this.fetchEveryBook();
+    }
+    handleModalShow = ()  => {
+      this.setState({
+        showNewBookForm: true,
+      });
+    }
+
+    handleModalClose = () => {
+      this.setState({
+        showNewBookForm: false,
+      });
     }
 
   // async componentDidMount() {
@@ -69,9 +82,12 @@ class BestBooks extends React.Component {
                     </Carousel.Item>)
                     }
               </Carousel>
+
         ) : (
           <h3>No Books Found :</h3>
         )}
+        <Button onClick={this.handleModalShow} variant="dark">Add Book</Button>
+        <BookFormModal showNewBookForm={this.state.showNewBookForm} onModalClose={this.handleModalClose}/>
 
       </>
     )
