@@ -41,6 +41,15 @@ class BestBooks extends React.Component {
         showNewBookForm: false,
       });
     }
+
+    handleDeleteBook = (id) => {
+      console.log("id:", id);
+      axios.delete(`${PORT}/books/${id}`)
+      .then(response => {
+        console.log('Booked Deleted.', response);
+        this.fetchEveryBook();
+      })
+    }
     // Save book axios call
 
     saveBook = (title, desciption, status) => {
@@ -50,6 +59,7 @@ class BestBooks extends React.Component {
         status: status,
       }).then(res => {
         console.log("New book created", res)
+        this.fetchEveryBook();
       });
       
 
@@ -64,7 +74,7 @@ class BestBooks extends React.Component {
 
         {this.state.books.length ? (
               <Carousel>
-                    {this.state.books.map((books, idx) =>
+                    {this.state.books.map((book, idx) =>
                     <Carousel.Item key={idx}>
                             <img
                               className="d-block w-100"
@@ -73,14 +83,15 @@ class BestBooks extends React.Component {
                             />
                       <Carousel.Caption>
                         <h3>
-                          {books.title}
+                          {book.title}
                         </h3>
                         <p>
-                          {books.description}
+                          {book.description}
                         </p>
                         <p>
-                           {books.status}
+                           {book.status}
                         </p>
+                        <Button onClick={() => this.handleDeleteBook(book._id)}> Delete Book</Button>
                       </Carousel.Caption>
                     </Carousel.Item>)
                     }
