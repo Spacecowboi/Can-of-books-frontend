@@ -38,6 +38,9 @@ class BestBooks extends React.Component {
     }
 
     handleModalClose = () => {
+      if(this.state.editingBook !== null){
+        this.fetchEveryBook();
+      }
       this.setState({
         showNewBookForm: false,
         editingBook: null,
@@ -101,7 +104,7 @@ class BestBooks extends React.Component {
                            {book.status}
                         </p>
                         <Button onClick={() => this.handleDeleteBook(book._id)}> Delete Book</Button>
-                        <Button onClick={() => this.handleEditBook(book)}>Edit Book</Button> 
+                        <Button variant='secondary' onClick={() => this.handleEditBook(book)}>Edit Book</Button> 
                       </Carousel.Caption>
                     </Carousel.Item>)
                     }
