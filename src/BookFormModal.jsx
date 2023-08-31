@@ -8,13 +8,13 @@ const url=import.meta.env.VITE_server_url
 class BookFormModal extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();
-    const formTitle = event.target.elements.formTitle.value;
+    const title = event.target.elements.title.value;
     const formDescription = event.target.elements.formDescription.value;
     const formStatus = event.target.elements.formStatus.value;
 
     if (this.props.editingBook) {
       // If editing, send our updated data to the server and handle the response
-      const updatedData = { title: formTitle, description: formDescription, status: formStatus };
+      const updatedData = { title: title, description: formDescription, status: formStatus };
       try {
         const response = await fetch(`${url}/books/${this.props.editingBook._id}`, {
           method: 'PUT',
@@ -34,7 +34,7 @@ class BookFormModal extends React.Component {
         // handle whatever error pops up
       }
     } else {
-      this.props.onModalSave(formTitle, formDescription, formStatus);
+      this.props.onModalSave(title, formDescription, formStatus);
       this.props.onModalClose();
     }
   }
@@ -50,7 +50,7 @@ class BookFormModal extends React.Component {
         
         <Modal.Body>
           <form onSubmit={this.handleSubmit}>
-            <Form.Group className="mb-3" controlId="formTitle">
+            <Form.Group className="mb-3" controlId="title">
               <Form.Label>Title</Form.Label>
               <Form.Control required type="text" defaultValue={editingBook ? editingBook.title : ''} />
             </Form.Group>
