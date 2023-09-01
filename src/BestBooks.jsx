@@ -54,8 +54,12 @@ class BestBooks extends React.Component {
     }
 
     handleModalClose = () => {
+      if(this.state.editingBook !== null){
+        this.fetchEveryBook();
+      }
       this.setState({
         showNewBookForm: false,
+        editingBook: null,
       });
     }
 
@@ -68,6 +72,13 @@ class BestBooks extends React.Component {
       })
     }
     // Save book axios call
+    // setting the state of the book to be edited
+    handleEditBook = (book) => {
+      this.setState({
+        editingBook: book,
+        showNewBookForm: true,
+      });
+    }
 
     saveBook = (title, desciption, status) => {
       axios.post(`${PORT}/books`, {
@@ -112,6 +123,7 @@ class BestBooks extends React.Component {
                            {book.status}
                         </p>
                         <Button onClick={() => this.handleDeleteBook(book._id)}> Delete Book</Button>
+                        <Button variant='secondary' onClick={() => this.handleEditBook(book)}>Edit Book</Button> 
                       </Carousel.Caption>
                     </Carousel.Item>)
                     }
@@ -123,6 +135,7 @@ class BestBooks extends React.Component {
         <Button onClick={this.handleModalShow} variant="dark">Add Book</Button>
         <BookFormModal 
           showNewBookForm={this.state.showNewBookForm} 
+          editingBook={this.state.editingBook} //this is gonna change the state of the book for EDIT purposes not deleting or adding a new book
           onModalClose={this.handleModalClose}
           onModalSave={this.saveBook}   />
 
