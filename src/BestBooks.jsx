@@ -42,7 +42,7 @@ class BestBooks extends React.Component {
         },
         method: 'GET',
         baseURL: 'http://localhost:3001',
-        url: '/pokemon'
+        url: '/books'
       }
       const bookResponse = await axios(config);
       console.log(bookResponse);

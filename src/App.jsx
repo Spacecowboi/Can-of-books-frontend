@@ -34,7 +34,7 @@ class App extends React.Component {
           />
         </Routes>
         <AuthButtons />
-          {isAuthenticated} ? <BestBooks /> : <h2> Please log in to see some books </h2>
+          { isAuthenticated ? <BestBooks /> : <h2> Please log in to see some books </h2> }
         <Footer />
       </Router>
     );
