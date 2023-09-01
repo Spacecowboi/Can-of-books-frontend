@@ -26,15 +26,13 @@ class App extends React.Component {
         <Routes>
           <Route 
             path="/"          
-            element={<BestBooks />}
+            element={isAuthenticated ? <BestBooks /> : <h2> Please log in to see some books </h2> }
           />
           <Route
             path="/About"
             element={<About />}
           />
         </Routes>
-        <AuthButtons />
-          { isAuthenticated ? <BestBooks /> : <h2> Please log in to see some books </h2> }
         <Footer />
       </Router>
     );
