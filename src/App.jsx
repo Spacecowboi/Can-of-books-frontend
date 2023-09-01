@@ -9,10 +9,9 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import { useAuth0 } from '@auth0/auth0-react';
+import { withAuth0 } from '@auth0/auth0-react';
 import AuthButtons from './Components/AuthButtons';
 
-const { isAuthenticated } = useAuth0; // don't use in class component (hook)
 
 class App extends React.Component {
   constructor(props){
@@ -20,6 +19,7 @@ class App extends React.Component {
 
   }
   render() {
+    let isAuthenticated = this.props.auth0.isAuthenticated;
     return (
       <Router>
         <Header />
@@ -41,5 +41,5 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withAuth0(App);
 
