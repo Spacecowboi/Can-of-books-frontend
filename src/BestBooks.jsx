@@ -19,26 +19,26 @@ class BestBooks extends React.Component {
       token: null,
     }
   }
+  
+  async componentDidMount() {
+    this.fetchEveryBook();
+    let res = await this.props.auth0.getIdTokenClaims();
+    console.log(res.__raw);
+    const token = res.__raw
+    console.log('OUR WEB TOKEN!!!', token);
+    this.setState({ token }, () => this.fetchEveryBook());
+  }
 
-  /* TODO: Make a GET request to your API to fetch all the books from the database  */
-  fetchEveryBook = () => {
+  fetchEveryBook = async () => {
     // axios.get(`${import.meta.env.VITE_server_url}/books`)
     axios.get(`${PORT}/books`)
       .then(response => {
         this.setState({ books: response.data });
         console.log(response.data)
       });
-  }
-    async componentDidMount() {
-      this.fetchEveryBook();
-      let res = await this.props.auth0.getIdTokenClaims();
-      const token = res.__raw
-      console.log('OUR WEB TOKEN!!!', token);
-      this.setState({ token });
-
       const config = {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${this.state.token}`
         },
         method: 'GET',
         baseURL: 'http://localhost:3001',
@@ -46,7 +46,9 @@ class BestBooks extends React.Component {
       }
       const bookResponse = await axios(config);
       console.log(bookResponse);
-    }
+  }
+
+    
     handleModalShow = ()  => {
       this.setState({
         showNewBookForm: true,
@@ -98,7 +100,6 @@ class BestBooks extends React.Component {
     console.log('BestBook PROPS!', this.props);
     console.log('AUTH0 User:', this.props.auth0.user);
 
-    /* TODO: render all the books in a Carousel */
     return (
       <>
         <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
@@ -143,7 +144,6 @@ class BestBooks extends React.Component {
     )
   }
 }
-
 const AuthBestBook = withAuth0(BestBooks);
 
 export default AuthBestBook;
