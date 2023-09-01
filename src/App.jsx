@@ -9,7 +9,10 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import { useAuth0 } from '@auth0/auth0-react';
+import AuthButtons from './Components/AuthButtons';
 
+const { isAuthenticated } = useAuth0; // don't use in class component (hook)
 
 class App extends React.Component {
   constructor(props){
@@ -30,6 +33,8 @@ class App extends React.Component {
             element={<About />}
           />
         </Routes>
+        <AuthButtons />
+          {isAuthenticated} ? <BestBooks /> : <h2> Please log in to see some books </h2>
         <Footer />
       </Router>
     );
