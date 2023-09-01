@@ -4,6 +4,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import BackgroundImage from './images/bookshelf_image.jpeg'
 import Button from 'react-bootstrap/Button';
 import BookFormModal from './BookFormModal';
+import { withAuth0 } from '@auth0/auth0-react';
 
 
 const PORT = import.meta.env.VITE_server_url;
@@ -15,7 +16,7 @@ class BestBooks extends React.Component {
     this.state = {
       books: [],
       showNewBookForm: false,
-      editingBook: null,
+      token: null,
     }
   }
 
@@ -28,8 +29,23 @@ class BestBooks extends React.Component {
         console.log(response.data)
       });
   }
-    componentDidMount() {
+    async componentDidMount() {
       this.fetchEveryBook();
+      let res = await this.props.auth0.getIdTokenClaims();
+      const token = res.__raw
+      console.log('OUR WEB TOKEN!!!', token);
+      this.setState({ token });
+
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        method: 'GET',
+        baseURL: 'http://localhost:3001',
+        url: '/books'
+      }
+      const bookResponse = await axios(config);
+      console.log(bookResponse);
     }
     handleModalShow = ()  => {
       this.setState({
@@ -79,6 +95,9 @@ class BestBooks extends React.Component {
 
   render() {
 
+    console.log('BestBook PROPS!', this.props);
+    console.log('AUTH0 User:', this.props.auth0.user);
+
     /* TODO: render all the books in a Carousel */
     return (
       <>
@@ -124,6 +143,7 @@ class BestBooks extends React.Component {
     )
   }
 }
-      
 
-export default BestBooks;
+const AuthBestBook = withAuth0(BestBooks);
+
+export default AuthBestBook;

@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
+import AuthButtons from './Components/AuthButtons';
 
 class Header extends React.Component {
   render() {
@@ -15,6 +16,9 @@ class Header extends React.Component {
           </Nav>
           <Nav>
             <Link to="/About" className="btn btn-outline-light">About</Link>
+          </Nav>
+          <Nav>
+            <AuthButtons />
           </Nav>
         </Navbar.Collapse>
       </Navbar>
