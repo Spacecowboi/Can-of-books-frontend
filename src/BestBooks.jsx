@@ -21,7 +21,7 @@ class BestBooks extends React.Component {
   }
   
   async componentDidMount() {
-    this.fetchEveryBook();
+    // this.fetchEveryBook();
     let res = await this.props.auth0.getIdTokenClaims();
     console.log(res.__raw);
     const token = res.__raw
@@ -67,7 +67,17 @@ class BestBooks extends React.Component {
 
     handleDeleteBook = (id) => {
       console.log("id:", id);
-      axios.delete(`${PORT}/books/${id}`)
+      const request = {
+        method:'DELETE',
+        headers: {
+          Authorization: `Bearer ${this.state.token}`
+        },
+        baseUrl: PORT,
+        url: `/books/${id}`
+      }
+
+
+      axios(request)
       .then(response => {
         console.log('Booked Deleted.', response);
         this.fetchEveryBook();
@@ -76,18 +86,46 @@ class BestBooks extends React.Component {
     // Save book axios call
     // setting the state of the book to be edited
     handleEditBook = (book) => {
+      const { title, description, status } = book;
+      const request = {
+        headers: {
+          Authorization: `Bearer ${this.state.token}`
+        },
+        method: 'PUT',
+        baseUrl: PORT,
+        url: `/books`,
+        data: {
+          title: title,
+          description: description,
+          status: status,
+        }
+      }
+      axios(request).then(res => {
+        console.log("Book has been edited", res)
+        this.fetchEveryBook();
+      })
       this.setState({
         editingBook: book,
         showNewBookForm: true,
       });
     }
 
-    saveBook = (title, desciption, status) => {
-      axios.post(`${PORT}/books`, {
-        title: title,
-        description: desciption,
-        status: status,
-      }).then(res => {
+    saveBook = (title, description, status) => {
+      const request = {
+        headers: {
+          Authorization: `Bearer ${this.state.token}`
+        },
+        method: 'POST',
+        baseUrl: PORT,
+        url: `/books`,
+        data: {
+          title: title,
+          description: description,
+          status: status,
+        }
+      }
+
+      axios(request).then(res => {
         console.log("New book created", res)
         this.fetchEveryBook();
       });
