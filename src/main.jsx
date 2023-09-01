@@ -10,7 +10,7 @@ root.render(
     domain="dev-7k7i2wqvjpy65v7p.us.auth0.com"
     clientId="7E2HPeuQz5NxJJjy9GQQ3UfTTjA1DvVi"
     authorizationParams={{
-      redirect_url: window.location.origin,
+      redirect_uri: 'http://localhost:5173',
      }}
     >
     <App />
